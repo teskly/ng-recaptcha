@@ -1,76 +1,47 @@
 {
-  "name": "ng-recaptcha",
-  "version": "5.0.0",
-  "description": "Angular component for Google reCAPTCHA",
-  "scripts": {
-    "demo": "cd demo && yarn serve",
-    "demo:install": "cd demo && yarn install",
-    "demo:clean": "cd demo && yarn clean:all",
-    "demo:build": "cd demo && yarn build",
-    "demo:publish": "yarn demo:publish-gh-pages",
-    "demo:publish-gh-pages": "gh-pages -d demo/dist/ng-recaptcha",
-    "pack-latest": "yarn clean && yarn transpile && cd dist && mv \"$(npm pack)\" ../ng-recaptcha-latest.tgz",
-    "transpile": "ng-packagr -p ./tsconfig.json",
-    "clean": "del-cli 'ng-recaptcha-*.tgz' && yarn demo:clean",
-    "changelog": "conventional-changelog --preset angular --infile CHANGELOG.md --same-file",
-    "github-release": "conventional-github-releaser --preset angular",
-    "prepare-release": "npm whoami && yarn build && npm version $1",
-    "push-release": "git push && git push --tags",
-    "version": "yarn changelog && git add CHANGELOG.md && yarn demo:build && git add demo/*/yarn.lock",
-    "lint:prod": "tslint --project ./tsconfig.json --type-check",
-    "lint": "yarn lint:prod --force",
-    "build": "run-s clean lint:prod transpile",
-    "prepush": "yarn lint:prod"
-  },
-  "main": "index.js",
-  "typings": "index.d.ts",
+  "name": "ng-recaptcha-v-a-a",
+  "version": "0.0.2",
+  "description": "Angular component for Google reCAPTCHA (Settings providing free) (Based on ng-recaptcha by @DethAriel)",
+  "license": "MIT",
+  "author": "Temir Esklyanov <im@teskly.com>",
+  "homepage": "https://github.com/teskly/ng-recaptcha#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DethAriel/ng-recaptcha"
-  },
-  "keywords": [
-    "angular",
-    "recaptcha",
-    "angular-recaptcha",
-    "ng-recaptcha"
-  ],
-  "author": "Ruslan Arkhipau <dethariel@gmail.com>",
-  "license": "MIT",
-  "ngPackage": {
-    "lib": {
-      "entryFile": "index.ts"
-    }
+    "url": "git+https://github.com/teskly/ng-recaptcha"
   },
   "optionalDependencies": {
-    "@types/grecaptcha": "^2.0.33"
+    "@types/grecaptcha": "^3.0.0"
+  },
+  "peerDependencies": {
+    "@angular/common": "^7.2.0",
+    "@angular/core": "^7.2.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~0.13.0",
+    "@angular-devkit/build-ng-packagr": "~0.13.0",
+    "@angular/cli": "~7.3.9",
+    "@angular/compiler-cli": "~7.2.0",
+    "@angular/language-service": "~7.2.0",
+    "@types/node": "~8.9.4",
+    "@types/jasmine": "~2.8.8",
+    "@types/jasminewd2": "~2.0.3",
+    "codelyzer": "~4.5.0",
+    "jasmine-core": "~2.99.1",
+    "jasmine-spec-reporter": "~4.2.1",
+    "karma": "~4.0.0",
+    "karma-chrome-launcher": "~2.2.0",
+    "karma-coverage-istanbul-reporter": "~2.0.1",
+    "karma-jasmine": "~1.1.2",
+    "karma-jasmine-html-reporter": "^0.2.2",
+    "ng-packagr": "^4.2.0",
+    "protractor": "~5.4.0",
+    "ts-node": "~7.0.0",
+    "tsickle": ">=0.34.0",
+    "tslib": "^1.9.0",
+    "tslint": "~5.11.0",
+    "typescript": "~3.2.2"
   },
   "dependencies": {
     "tslib": "^1.9.0"
-  },
-  "peerDependencies": {
-    "@angular/core": "^6.0.0 || ^7.0.0 || ^8.0.0"
-  },
-  "devDependencies": {
-    "@angular/common": "^6.0.0",
-    "@angular/compiler": "^6.0.0",
-    "@angular/compiler-cli": "^6.0.0",
-    "@angular/core": "^6.0.0",
-    "@angular/forms": "^6.0.0",
-    "@angular/platform-browser": "^6.0.0",
-    "@types/core-js": "^0.9.39",
-    "angular-precommit": "^1.0.3",
-    "codelyzer": "^4.3.0",
-    "conventional-changelog-cli": "^1.3.1",
-    "conventional-github-releaser": "^1.1.13",
-    "del-cli": "^0.2.1",
-    "gh-pages": "^0.12.0",
-    "husky": "^0.13.3",
-    "ng-packagr": "^5.2.0",
-    "npm-run-all": "^4.1.2",
-    "rxjs": "^6.1.0",
-    "tslint": "~5.7.0",
-    "typescript": "~2.7.2",
-    "zone.js": "^0.8.26"
-  },
-  "homepage": "https://github.com/DethAriel/ng-recaptcha#readme"
+  }
 }
