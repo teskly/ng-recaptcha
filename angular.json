@@ -3,8 +3,8 @@
   "version": 1,
   "newProjectRoot": "",
   "projects": {
-    "ng-recaptcha-x-spf": {
-      "root": "projects/ng-recaptcha-x-spf",
+    "ng-skpf-recaptcha": {
+      "root": "projects/ng-skpf-recaptcha",
       "sourceRoot": "./src",
       "projectType": "library",
       "prefix": "lib",
@@ -39,5 +39,5 @@
       }
     }
   },
-  "defaultProject": "ng-recaptcha-x-spf"
+  "defaultProject": "ng-skpf-recaptcha"
 }

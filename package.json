@@ -1,7 +1,7 @@
 {
-  "name": "xmpl-a",
-  "version": "0.0.3",
-  "description": "Angular component for Google reCAPTCHA (Settings providing free) (Based on ng-recaptcha by @DethAriel)",
+  "name": "ng-skpf-recaptcha",
+  "version": "0.0.1",
+  "description": "Angular service for Google reCAPTCHA (Site-key providing free) (Based on ng-recaptcha by @DethAriel)",
   "license": "MIT",
   "author": "Temir Esklyanov <im@teskly.com>",
   "homepage": "https://github.com/teskly/ng-recaptcha#readme",
@@ -33,16 +33,15 @@
     "ng-packagr": "^4.2.0",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
-    "tsickle": ">=0.34.0",
     "tslib": "^1.9.0",
-    "tslint": "~5.11.0",
-    "typescript": "~3.2.2"
+    "tslint": "^5.7.0",
+    "typescript": "^3.0.0"
   },
   "dependencies": {
-    "@angular/core": "8.2.0",
-    "@angular/forms": "8.2.0",
+    "@angular/core": "^6.0.0",
+    "@angular/forms": "^6.0.0",
     "@types/grecaptcha": "^3.0.0",
-    "rxjs": "6.5.2",
+    "rxjs": "^6.1.0",
     "rxjs-tslint": "0.1.7"
   }
 }
