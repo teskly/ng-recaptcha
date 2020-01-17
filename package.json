@@ -1,6 +1,6 @@
 {
     "name": "ng-skpf-recaptcha",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "description": "Angular service for Google reCAPTCHA (Site-key providing free) (Based on ng-recaptcha by @DethAriel)",
     "license": "MIT",
     "author": "Temir Esklyanov <im@teskly.com>",
@@ -10,8 +10,8 @@
         "url": "git+https://github.com/teskly/ng-recaptcha"
     },
     "peerDependencies": {
-        "@angular/common": "^7.2.0",
-        "@angular/core": "^7.2.0"
+        "@angular/common": "~7.2.0",
+        "@angular/core": "~7.2.0"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "~0.13.0",

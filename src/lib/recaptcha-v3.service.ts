@@ -31,7 +31,7 @@ export class ReCaptchaV3Service implements OnDestroy {
     private sitekeySubscription: Subscription;
 
     constructor(
-        private zone: NgZone,
+        @Inject(NgZone) private zone,
         @Optional() @Inject(RECAPTCHA_V3_SITE_KEY) injectedSiteKey: string,
         @Inject(PLATFORM_ID) platformId: any,
         @Optional() @Inject(RECAPTCHA_BASE_URL) baseUrl?: string,
