@@ -1,0 +1,26 @@
+# Editor settings
+.vscode/
+
+# OS files
+.DS_Store
+
+# compiled sources
+/dist
+/*.js
+/*.d.ts
+/recaptcha/**/*.js
+/recaptcha/**/*.d.ts
+
+# Angular AoT output
+*.metadata.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+node_modules
+
+# Build files
+ng-recaptcha-*.tgz
