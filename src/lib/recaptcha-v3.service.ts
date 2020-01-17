@@ -1,6 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, InjectionToken, NgZone, Optional, PLATFORM_ID } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
 
 import { loadScript, RECAPTCHA_BASE_URL, RECAPTCHA_NONCE } from './recaptcha-loader.service';
 
@@ -30,8 +30,6 @@ export class ReCaptchaV3Service {
   /** @internal */
   private readonly isBrowser: boolean;
   /** @internal */
-  private readonly siteKey: string;
-  /** @internal */
   private readonly zone: NgZone;
   /** @internal */
   private actionBacklog: ActionBacklogEntry[] | undefined;
@@ -47,99 +45,98 @@ export class ReCaptchaV3Service {
   /** @internal */
   private onExecuteObservable: Observable<OnExecuteData>;
 
+    public siteKey: BehaviorSubject<string> = new BehaviorSubject(null);
+    private siteKeyObservable: Observable<string> = this.siteKey.asObservable();
+    private sitekeySubscription: Subscription;
+
   constructor(
     zone: NgZone,
-    @Optional() @Inject(RECAPTCHA_V3_SITE_KEY) siteKey: string,
+    @Optional() @Inject(RECAPTCHA_V3_SITE_KEY) injectedSiteKey: string,
     // tslint:disable-next-line:no-any
     @Inject(PLATFORM_ID) platformId: any,
     @Optional() @Inject(RECAPTCHA_BASE_URL) baseUrl?: string,
     @Optional() @Inject(RECAPTCHA_NONCE) nonce?: string,
   ) {
-    this.zone = zone;
-    this.isBrowser = isPlatformBrowser(platformId);
-    this.nonce = nonce;
-    this.baseUrl = baseUrl;
+      this.zone = zone;
+      this.isBrowser = isPlatformBrowser(platformId);
+      this.nonce = nonce;
+      this.baseUrl = baseUrl;
 
-    if (siteKey) {
-        this.siteKey = siteKey;
-        this.init();
-    }
+      if (injectedSiteKey) {
+          this.siteKey.next(injectedSiteKey);
+          this.init();
+      }
+
+      this.sitekeySubscription = this.siteKeyObservable
+          .subscribe((newSiteKey: string) => {
+              if (newSiteKey) {
+                  this.init();
+              }
+          });
   }
 
-  public get onExecute(): Observable<OnExecuteData> {
-    if (!this.onExecuteSubject) {
-      this.onExecuteSubject = new Subject<OnExecuteData>();
-      this.onExecuteObservable = this.onExecuteSubject.asObservable();
+    ngOnDestroy(): void {
+        this.sitekeySubscription.unsubscribe();
     }
 
-    return this.onExecuteObservable;
-  }
-
-  /**
-   * Executes the provided `action` with reCAPTCHA v3 API.
-   * Use the emitted token value for verification purposes on the backend.
-   *
-   * For more information about reCAPTCHA v3 actions and tokens refer to the official documentation at
-   * https://developers.google.com/recaptcha/docs/v3.
-   *
-   * @param {string} action the action to execute
-   * @returns {Observable<string>} an `Observable` that will emit the reCAPTCHA v3 string `token` value whenever ready.
-   * The returned `Observable` completes immediately after emitting a value.
-   */
-  public execute(action: string): Observable<string> {
-    const subject = new Subject<string>();
-    if (this.isBrowser) {
-      if (!this.grecaptcha) {
-        // todo: add to array of later executions
-        if (!this.actionBacklog) {
-          this.actionBacklog = [];
+    public get onExecute(): Observable<OnExecuteData> {
+        if (!this.onExecuteSubject) {
+            this.onExecuteSubject = new Subject<OnExecuteData>();
+            this.onExecuteObservable = this.onExecuteSubject.asObservable();
         }
 
-        this.actionBacklog.push([action, subject]);
-      } else {
-        this.executeActionWithSubject(action, subject);
-      }
+        return this.onExecuteObservable;
     }
 
-    return subject.asObservable();
-  }
+    public execute(action: string): Observable<string> {
+        const subject = new Subject<string>();
+        if (this.isBrowser) {
+            if (!this.grecaptcha) {
+                if (!this.actionBacklog) {
+                    this.actionBacklog = [];
+                }
 
-  /** @internal */
-  private executeActionWithSubject(action: string, subject: Subject<string>): void {
-    this.zone.runOutsideAngular(() => {
-      // tslint:disable-next-line:no-any
-      (this.grecaptcha.execute as any)(
-        this.siteKey,
-        { action },
-      ).then((token: string) => {
-        this.zone.run(() => {
-          subject.next(token);
-          subject.complete();
-          if (this.onExecuteSubject) {
-            this.onExecuteSubject.next({ action, token });
-          }
+                this.actionBacklog.push([action, subject]);
+            } else {
+                this.executeActionWithSubject(action, subject);
+            }
+        }
+
+        return subject.asObservable();
+    }
+
+    private executeActionWithSubject(action: string, subject: Subject<string>): void {
+        this.zone.runOutsideAngular(() => {
+            (this.grecaptcha.execute as any)(
+                this.siteKey.getValue(),
+                { action },
+            ).then((token: string) => {
+                this.zone.run(() => {
+                    subject.next(token);
+                    subject.complete();
+                    if (this.onExecuteSubject) {
+                        this.onExecuteSubject.next({ action, token });
+                    }
+                });
+            });
         });
-      });
-    });
-  }
+    }
 
-  /** @internal */
-  private init() {
-    if (this.isBrowser) {
-      if ('grecaptcha' in window) {
+    private init() {
+        if (this.isBrowser) {
+            if ('grecaptcha' in window) {
+                this.grecaptcha = grecaptcha;
+            } else {
+                loadScript(this.siteKey.getValue(), this.onLoadComplete, '', this.baseUrl, this.nonce);
+            }
+        }
+    }
+
+    private onLoadComplete = (grecaptcha: ReCaptchaV2.ReCaptcha) => {
         this.grecaptcha = grecaptcha;
-      } else {
-        loadScript(this.siteKey, this.onLoadComplete, '', this.baseUrl, this.nonce);
-      }
+        if (this.actionBacklog && this.actionBacklog.length > 0) {
+            this.actionBacklog.forEach(([action, subject]) => this.executeActionWithSubject(action, subject));
+            this.actionBacklog = undefined;
+        }
     }
-  }
-
-  /** @internal */
-  private onLoadComplete = (grecaptcha: ReCaptchaV2.ReCaptcha) => {
-    this.grecaptcha = grecaptcha;
-    if (this.actionBacklog && this.actionBacklog.length > 0) {
-      this.actionBacklog.forEach(([action, subject]) => this.executeActionWithSubject(action, subject));
-      this.actionBacklog = undefined;
-    }
-  }
 }

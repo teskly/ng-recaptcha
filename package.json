@@ -1,6 +1,6 @@
 {
     "name": "wip-ng-skpf-recaptcha",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "Angular service for Google reCAPTCHA (Site-key providing free) (Based on ng-recaptcha by @DethAriel)",
     "license": "MIT",
     "author": "Temir Esklyanov <im@teskly.com>",
