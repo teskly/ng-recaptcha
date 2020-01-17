@@ -1,4 +1,3 @@
-
 export {
   RecaptchaLoaderService,
   RECAPTCHA_LANGUAGE,

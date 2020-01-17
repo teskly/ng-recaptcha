@@ -18,7 +18,6 @@ type ActionBacklogEntry = [string, Subject<string>];
 export class ReCaptchaV3Service implements OnDestroy {
 
     private readonly isBrowser: boolean;
-    private readonly zone: NgZone;
     private actionBacklog: ActionBacklogEntry[] | undefined;
     private nonce: string;
     private baseUrl: string;
@@ -32,7 +31,7 @@ export class ReCaptchaV3Service implements OnDestroy {
     private sitekeySubscription: Subscription;
 
     constructor(
-    zone: NgZone,
+        private zone: NgZone,
         @Optional() @Inject(RECAPTCHA_V3_SITE_KEY) injectedSiteKey: string,
         @Inject(PLATFORM_ID) platformId: any,
         @Optional() @Inject(RECAPTCHA_BASE_URL) baseUrl?: string,
