@@ -1,6 +1,6 @@
 {
-    "name": "ng-skpf-recaptcha",
-    "version": "0.0.10",
+    "name": "wip-ng-skpf-recaptcha",
+    "version": "0.0.7",
     "description": "Angular service for Google reCAPTCHA (Site-key providing free) (Based on ng-recaptcha by @DethAriel)",
     "license": "MIT",
     "author": "Temir Esklyanov <im@teskly.com>",
@@ -10,8 +10,13 @@
         "url": "git+https://github.com/teskly/ng-recaptcha"
     },
     "peerDependencies": {
+        "@angular/animations": "~7.2.0",
         "@angular/common": "~7.2.0",
-        "@angular/core": "~7.2.0"
+        "@angular/compiler": "~7.2.0",
+        "@angular/core": "~7.2.0",
+        "@angular/forms": "~7.2.0",
+        "@angular/platform-browser": "~7.2.0",
+        "@angular/platform-browser-dynamic": "~7.2.0"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "~0.13.0",
@@ -39,14 +44,6 @@
         "typescript": "~3.2.2"
     },
     "dependencies": {
-        "@angular/animations": "~7.2.0",
-        "@angular/common": "~7.2.0",
-        "@angular/compiler": "~7.2.0",
-        "@angular/core": "~7.2.0",
-        "@angular/forms": "~7.2.0",
-        "@angular/platform-browser": "~7.2.0",
-        "@angular/platform-browser-dynamic": "~7.2.0",
-        "@angular/router": "~7.2.0",
         "@types/grecaptcha": "^3.0.0",
         "core-js": "^2.5.4",
         "rxjs": "~6.3.3",
